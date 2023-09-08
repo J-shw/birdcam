@@ -1,0 +1,96 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    background-color: black;
+}
+
+.top {
+    padding: 0.5%;
+    width: 99%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.top a {
+    flex: 1;
+    max-width: 40%;
+}
+p {
+    color: white;
+    flex: 1;
+    float: left;
+    margin-top: 0px;
+    font-size: xx-large;
+    text-align: center;
+}
+
+.image-body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+.main-img {
+    max-width: 100%; /* Set the maximum width of the image to 100% */
+    max-height: 100%; /* Set the maximum height of the image to 100% */
+    width: auto; /* Set the width to auto to preserve the aspect ratio */
+    height: auto; /* Set the height to auto to preserve the aspect ratio */
+}
+
+.download{
+    float: right;
+    transition: 0.2s;
+    width: 10%;
+    filter: opacity(0.2) invert(1);
+}
+.download:hover{
+    transition: 0.5s;
+    filter: opacity(1) invert(1);
+}
+
+.back{
+    margin-left: 5%;
+    float: left;
+    transition: 0.2s;
+    filter: opacity(0.2) invert(1);
+    width: 10%;
+}
+.back:hover{
+    transition: 0.5s;
+    filter: opacity(1) invert(1);
+}
+
+.delete {
+    float: right;
+    margin-right: 5%;
+    transition: 0.2s;
+    filter: opacity(0.2) invert(1);
+    width: 10%;
+}
+.delete:hover {
+    transition: 0.5s;
+    filter: opacity(1) invert(1);
+}
+
+@media screen and (max-width: 750px){
+    .download{
+        width: 20%;
+    }
+
+    .back{
+        width: 20%;
+    }
+
+    .delete{
+        width: 20%;
+    }
+}

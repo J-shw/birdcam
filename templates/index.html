@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../static/css/style.css">
+<script src="../static/script/script.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ Captcha-Cam ]</title>
+</head>
+<body onload="loadable()">
+    <p class="title">[ Captcha-Cam ]</p>
+    <div class="buttons">
+        <button class="buttonOff" onclick="start()" id="startBtn">Start</button>
+        <button class="buttonOff" onclick="end()" id="endBtn">Stop</button>
+    </div>
+    <p class="status">Current status:</p>
+    <p class="status" id="currentStatus">Loading status...</p>
+    <div class="data">
+        <p id="cpuTemp">Loading CPU temp...</p>
+        <p id="cpuFreq">Loading CPU frequency...</p>
+        <p id="storage">Loading storage...</p>
+        <p id="latestPhoto">Loading latest photo time...</p>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <p class="title">photos</p>
+    <div class="viewer" id="viewer">
+    </div>
+</body>
+</html>

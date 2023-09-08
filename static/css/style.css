@@ -1,0 +1,122 @@
+body {
+    margin-left: 15%;
+    margin-right: 15%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.title {
+    font-size: xx-large;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header {
+    font-size: large;
+    text-align: center;
+}
+
+.buttons {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.buttons button {
+    transition: 0.2s;
+    font-size: xx-large;
+    margin-left: 5%;
+    width: 42%;
+    padding: 3%;
+    border: 0px;
+    border-radius: 20px;
+}
+.buttonOff {
+    transition: 0.2s;
+    background-color: lightblue;
+}
+.buttonOff:hover {
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: whitesmoke;
+}
+.buttonWait {
+    transition: 0.5s;
+    background-color: silver;
+    padding: 5%;
+}
+.buttonFail {
+    transition: 0.2s;
+    background-color: #FF0044;
+}
+.buttonComplete {
+    transition: 0.2s;
+    background-color: #06a85c;
+}
+
+.status {
+    font-size: x-large;
+    text-align: center;
+}
+
+.data {
+    width: 100%;
+    margin-top: 5%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+.data p {
+    flex: 1;
+    width: 15%;
+    padding: 3%;
+    margin: 0px;
+    font-size: large;
+    text-align: center;
+}
+
+.viewer {
+    background-color: whitesmoke;
+    padding: 3%;
+    border-radius: 20px;
+}
+.viewer div {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+.header { 
+    width: 100%;
+    font-size: large;
+    text-align: left;
+}
+.viewer div img {
+    flex: 1;
+    max-width: 180px;
+    padding: 0px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+.viewer div img:hover {
+    transition: 0.2s;
+    cursor: pointer;
+    filter: brightness(70%);
+}
+
+
+@media screen and (max-width: 750px){
+    body {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    
+    .title {
+        padding: 0px;
+    }
+
+    .viewer div img {
+        max-width: 100px;
+    }
+}

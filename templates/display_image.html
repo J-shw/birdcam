@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/static/css/image.css">
+<script src="/static/script/image.js"></script>
+<head>
+    <title>[ Captcha-Cam ]</title>
+</head>
+
+<body>
+    <div class="top">
+        <a href="/">
+            <img class="back" src="/static/data/icons/back.png">
+        </a>
+        <p><b>{{ image_name }}</b></p>
+        <a href="{{ url_for('static', filename=image_path) }}" download="{{ image_name }}">
+            <img class="download" src="/static/data/icons/download.png">
+        </a>
+        <a onclick="deleteImage('{{ image_loc }}')">
+            <img class="delete" src="/static/data/icons/bin.png">
+        </a>
+    </div>
+
+    <div class="image-body">
+        <img class="main-img" src="{{ url_for('static', filename=image_path) }}" alt="Image">
+    </div>
+</body>
+</html>
