@@ -54,7 +54,7 @@ function start(){
             console.log("Start error - " + data.data + " | " + data.status);
             setTimeout(() => {
                 resetStart()
-              }, 3000); 
+              }, 1000); 
         }else{
             startBtn.classList.remove("buttonOff");
             startBtn.classList.remove("buttonWait");
@@ -63,7 +63,7 @@ function start(){
             startBtn.innerHTML = "Running";
             setTimeout(() => {
                 resetStart()
-              }, 3000); 
+              }, 1000); 
         }
     })
     getStatus()
@@ -90,7 +90,7 @@ function end(){
             console.log("End error - " + data.data + " | " + data.status);
             setTimeout(() => {
                 resetEnd()
-              }, 3000);              
+              }, 1000);              
         }else{
             endBtn.classList.remove("buttonFail");
             endBtn.classList.remove("buttonOff");
@@ -99,7 +99,7 @@ function end(){
             endBtn.innerHTML = "Stopped";
             setTimeout(() => {
                 resetEnd()
-              }, 3000); 
+              }, 1000); 
         }
     })
     getStatus()
@@ -222,4 +222,4 @@ function data(){
 }
 
 setTimeout(() => {loadImages()}, 2000);
-setInterval(loadable, 10000);
+setInterval(loadable, 1000);
