@@ -8,8 +8,8 @@ debug = False
 crash = [False, None]
 
 wait = 1
-filePath = "/home/josh/AnimaL-server/static/data/photos/" # Make sure there is a HR and LR folder to save High res and Low res photos
-last_time = datetime.datetime.now()
+filePath = "/home/bird/static/data/photos/" # Make sure there is a HR and LR folder to save High res and Low res photos
+last_time = None
 
 # Set GPIO mode to BCM
 io.setmode(io.BCM)
@@ -62,7 +62,11 @@ def run():
                 wait = 0.1
                 dprint("Motion")
                 current_time = datetime.datetime.now()
-                time_gap = current_time - last_time
+                if last_time != None:
+                    time_gap = current_time - last_time
+                else: 
+                    time_gap = current_time - current_time
+                    last_time = datetime.datetime.now()
 
                 if time_gap.total_seconds() >= 5:
                     last_time =  datetime.datetime.now()
@@ -123,11 +127,14 @@ def end():
     return([200, "Script stopped"])
 
 def last():
-    formatted_date = last_time.strftime("%Y-%m-%d")
-    formatted_time = last_time.strftime("%H:%M:%S")
+    if last_time != None:
+        formatted_date = last_time.strftime("%Y-%m-%d")
+        formatted_time = last_time.strftime("%H:%M:%S")
 
-    data = [formatted_date, formatted_time]
-    return(data)
+        data = [formatted_date, formatted_time]
+        return(data)
+    else:
+        return None
 
 def status(): # return layout - [Status, Running, Crashed, Error]
     global crash

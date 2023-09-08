@@ -208,10 +208,14 @@ function data(){
             // deviceData = [cpuTemp,cpuFreq,totalDisk,usedDisk]
             // lastPhoto = [date,time]
 
-            lastPhoto = data.data[0];
-            deviceData = data.data[1];
+            let lastPhoto = data.data[0];
+            let deviceData = data.data[1];
 
-            latestPhoto.innerHTML = "Recent - " + lastPhoto[0] + " | " + lastPhoto[1];
+            if (lastPhoto != null){
+                latestPhoto.innerHTML = "Recent - " + lastPhoto[0] + " | " + lastPhoto[1];
+            } else {
+                latestPhoto.innerHTML = "None" 
+            }
             cpuTemp.innerHTML = "CPU temp - " + deviceData[0] + "°C";
             cpuFreq.innerHTML = "CPU freq - " + deviceData[1] + "MHz";
             storage.innerHTML = "Storage - " + deviceData[3] + "/" + deviceData[2] + "GB";

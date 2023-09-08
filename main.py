@@ -28,17 +28,9 @@ else:
     import camera, psutil
     import RPi.GPIO as io
 
-    filePath = "/home/josh/AnimaL-server/static/data/photos/"
-    lowResPath = "/home/josh/AnimaL-server/static/data/photos/LR/"
-    highResPath = "/home/josh/AnimaL-server/static/data/photos/HR/"
-
-    # Set GPIO mode to BCM
-    io.setmode(io.BCM)
-    pir = 4
-
-    # Set pir as input
-    io.setup(pir, io.IN, io.PUD_DOWN)
-
+    filePath = "/home/bird/static/data/photos/"
+    lowResPath = "/home/bird/static/data/photos/LR/"
+    highResPath = "/home/bird/static/data/photos/HR/"
 
 print("\n\n")
 
@@ -108,6 +100,7 @@ def end():
     except Exception as e:
         return(jsonify(status=400, data=str(e)))
     if function[0] != 200:
+        thread.join()
         return(jsonify(status=function[0], data=function[1]))
     else:
         return(jsonify(status=200, data=None))
