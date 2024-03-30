@@ -21,13 +21,13 @@ function takePhoto(){
             btn.innerHTML = "Failed";
             console.log("Manual photo error - " + data.error + " | " + data.status);
             setTimeout(() => {
-                resetBtn(startBtn, 'Take photo')
+                resetBtn(btn, 'Take photo')
               }, 1000); 
         }else{
             btn.classList.add("buttonComplete");
             btn.innerHTML = "Complete";
             setTimeout(() => {
-                resetBtn(startBtn, 'Take photo')
+                resetBtn(btn, 'Take photo')
               }, 1000);
         }
     });
