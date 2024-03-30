@@ -1,8 +1,10 @@
 #Import necessary libraries
+import modules.startup
 from flask import Flask, render_template, jsonify
 from flask_caching import Cache
 from waitress import serve
-import time, os, threading
+from modules.sysLogger import logger
+import time, os, threading, motion, psutil
 
 """
 Librarys to install:
@@ -14,40 +16,22 @@ pip install psutil
 pip install Flask-Caching
 """
 
-
 #Initialize the Flask app
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
-debugMode = False
-laptop = False
 
-if laptop:
-    filePath = "/Users/josh/Documents/Coding/Big Pi projects/Animal Camera/webApp/static/data/photos/"
-else:
-    import camera, psutil
-    import RPi.GPIO as io
-
-    filePath = "/home/bird/static/data/photos/"
-    lowResPath = "/home/bird/static/data/photos/LR/"
-    highResPath = "/home/bird/static/data/photos/HR/"
+filePath = "/home/bird/static/data/photos/"
+lowResPath = "/home/bird/static/data/photos/LR/"
+highResPath = "/home/bird/static/data/photos/HR/"
 
 print("\n\n")
-
-
 
 time.sleep(0.2)
 
 print("\n\n- - -Server started - - -\n")
 
-def dprint(message):
-    if debugMode:
-        print(message)
-
-def run_in_thread():
-    camera.run()
-
-thread = threading.Thread(target=run_in_thread)
+thread = threading.Thread(target=motion.start)
 
 # Start camera system on boot
 thread.start()
@@ -64,60 +48,33 @@ def display_image(image_folder, image):
     return render_template('display_image.html', image_path=image_path, image_name=image, image_loc=image_loc)
 
 @app.route('/start', methods=['GET'])
-def start():
+def start_motion():
     global thread
-    function = camera.status() # return layout - [Status, Running, Crashed, Error]
-    if function[1]:
+
+    if motion.running:
         return(jsonify(status=200, data=None))
     else:
         try:
             thread.start()
-            time.sleep(2)
-            function = camera.status() # return layout - [Status, Running, Crashed, Error]
-            if function[2]:
-                return(jsonify(status=function[0], data=function[3]))
-            else:
-                    return(jsonify(status=200, data=None))
+            return(jsonify(status=200, data=None))
+        except Exception as e:
+            logger.critical(e)
+            return(jsonify(status=200, data=str(e)))
 
-        except Exception as a:
-            try:
-                camera.run()
-                time.sleep(0.5)
-                function = camera.status() # return layout - [Status, Running, Crashed, Error]
-                if function[2]:
-                    return(jsonify(status=500, data=function[3]))
-                else:
-                    return(jsonify(status=200, data=None))
-            except Exception as b:
-                error = str(a) + " | " + str(b)
-                return(jsonify(status=400, data=error))
+
 
 @app.route('/end', methods=['GET'])
-def end():
+def stop_motion():
     global thread
     try:
-        function = camera.end()
+        motion.stop()
     except Exception as e:
+        logger.error(e)
         return(jsonify(status=400, data=str(e)))
-    if function[0] != 200:
-        thread.join()
-        return(jsonify(status=function[0], data=function[1]))
     else:
         return(jsonify(status=200, data=None))
-
-@app.route('/status', methods=['GET'])
-def status():
-    try:
-        function = camera.status() # return layout - [Status, Running, Crashed, Error]
-    except Exception as e: return(jsonify(status=400, data = False, error=str(e)))
-
-    if function[0] != 200: return(jsonify(status=function[0], data = False, error=function[3]))
-
-    else: 
-        if function[2]: # If state is crashed then...
-            return(jsonify(status=200, data = False, error=function[3]))
-        
-        return(jsonify(status=200, data=function[1], error=False))
+    finally:
+        thread.join()
 
 @app.route('/lowResImg', methods=['GET'])
 def lowResImg_loc():
@@ -125,31 +82,25 @@ def lowResImg_loc():
 
     try:
         files_and_directories = os.listdir(lowResPath)
-        dprint(files_and_directories)
         directories = [d for d in files_and_directories if os.path.isdir(os.path.join(lowResPath, d))]
-        dprint(directories)
         for d in directories:
-            dprint("Here - " +str(d))
             current = []
             current.append(d)
             newFilePath = str(lowResPath) + str(d)
             files_and_directories = os.listdir(newFilePath)
             files = [f for f in files_and_directories if os.path.isfile(os.path.join(newFilePath, f))]
-            dprint(files)
+            
+            if len(files) == 0: return(jsonify(status=404, data="No files found"))
             for f in files:
                 current.append(f)
 
             sorted_current = [current[0]] + sorted(current[1:], key=lambda x: x.split('.')[0], reverse=True)
-            dprint(sorted_current)
             storage.append(sorted_current)
-            dprint(storage)
     except Exception as e:
-        dprint(str(e))
+        logger.error(e)
         return(jsonify(status=500, data=str(e)))
     
-    dprint(storage)
     sorted_storage = sorted(storage, key=lambda x: x[0], reverse=True)
-    dprint(sorted_storage)
 
     return jsonify(status=200, data=sorted_storage)
 
@@ -166,7 +117,7 @@ def data():
     totalDisk = round(disk.total / (1024*1024*1024), 2) #GB
     usedDisk = round(disk.used / (1024*1024*1024), 2) #GB
 
-    last = camera.last()
+    last = motion.last()
     
     
     deviceData = [cpuTemp,cpuFreq,totalDisk,usedDisk]
@@ -180,11 +131,10 @@ def deleteImage(image_folder, image):
         os.remove(lowResPath+"/"+image_folder+"/"+image)
         os.remove(highResPath+"/"+image_folder+"/"+image)
     except Exception as e:
+        logger.error(e)
         return  jsonify(data=str(e), status=500)
     return jsonify(data=None, status=200)
 
-if debugMode:
-    app.run(host='0.0.0.0', port=8080, debug=True)
-else:
-    if __name__ == "__main__":
-        serve(app, host="0.0.0.0", port=8080)
+
+if __name__ == "__main__":
+    serve(app, host="0.0.0.0", port=8080)
