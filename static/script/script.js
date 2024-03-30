@@ -2,6 +2,37 @@ function loadable(){
     data()
 }
 
+function takePhoto(){ 
+    let btn = document.getElementById("takePhotoBtn");
+    btn.classList.remove("buttonComplete");
+    btn.classList.remove("buttonOff");
+    btn.classList.remove("buttonFail");
+    btn.classList.add("buttonWait");
+    btn.innerHTML = "Wait";
+
+    fetch('/manual/photo')
+
+    .then(response => response.json())
+    .then(data=>{
+        btn.classList.remove("buttonWait");
+
+        if(data.status != 200){
+            btn.classList.add("buttonFail");
+            btn.innerHTML = "Failed";
+            console.log("Manual photo error - " + data.error + " | " + data.status);
+            setTimeout(() => {
+                resetBtn(startBtn, 'Take photo')
+              }, 1000); 
+        }else{
+            btn.classList.add("buttonComplete");
+            btn.innerHTML = "Complete";
+            setTimeout(() => {
+                resetBtn(startBtn, 'Take photo')
+              }, 1000);
+        }
+    });
+}
+
 function getStatus(){
     let statusText = document.getElementById("currentStatus");
     fetch('/status')
@@ -52,7 +83,7 @@ function start(){
             startBtn.innerHTML = "Failed";
             console.log("Start error - " + data.data + " | " + data.status);
             setTimeout(() => {
-                resetStart()
+                resetBtn(startBtn, 'Start')
               }, 1000); 
         }else{
             startBtn.classList.remove("buttonOff");
@@ -61,7 +92,7 @@ function start(){
             startBtn.classList.add("buttonComplete");
             startBtn.innerHTML = "Running";
             setTimeout(() => {
-                resetStart()
+                resetBtn(startBtn, 'Start')
               }, 1000); 
         }
     })
@@ -88,7 +119,7 @@ function end(){
             endBtn.innerHTML = "Failed";
             console.log("End error - " + data.data + " | " + data.status);
             setTimeout(() => {
-                resetEnd()
+                resetBtn(startBtn, 'Stop')
               }, 1000);              
         }else{
             endBtn.classList.remove("buttonFail");
@@ -97,29 +128,20 @@ function end(){
             endBtn.classList.add("buttonComplete");
             endBtn.innerHTML = "Stopped";
             setTimeout(() => {
-                resetEnd()
+                resetBtn(startBtn, 'Stop')
               }, 1000); 
         }
     })
     // getStatus()
 }
 
-function resetEnd(){
-    let endBtn = document.getElementById("endBtn");
-    endBtn.innerHTML = "Stop";
-    endBtn.classList.remove("buttonFail");
-    endBtn.classList.remove("buttonComplete");
-    endBtn.classList.remove("buttonWait");
-    endBtn.classList.add("buttonOff");
-}
-
-function resetStart(){
+function resetBtn(btn, text){
     let startBtn = document.getElementById("startBtn");
-    startBtn.innerHTML = "Start";
-    startBtn.classList.remove("buttonFail");
-    startBtn.classList.remove("buttonComplete");
-    startBtn.classList.remove("buttonWait");
-    startBtn.classList.add("buttonOff");
+    btn.innerHTML = text;
+    btn.classList.remove("buttonFail");
+    btn.classList.remove("buttonComplete");
+    btn.classList.remove("buttonWait");
+    btn.classList.add("buttonOff");
 }
 
 function showHiResImage(file){
