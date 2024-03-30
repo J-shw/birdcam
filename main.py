@@ -1,9 +1,10 @@
 #Import necessary libraries
 import modules.startup
+import modules.camera as camera_controls
+from modules.sysLogger import logger
 from flask import Flask, render_template, jsonify
 from flask_caching import Cache
 from waitress import serve
-from modules.sysLogger import logger
 import time, os, threading, motion, psutil
 
 """
@@ -20,10 +21,9 @@ pip install Flask-Caching
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
-
-filePath = "/home/bird/static/data/photos/"
-lowResPath = "/home/bird/static/data/photos/LR/"
-highResPath = "/home/bird/static/data/photos/HR/"
+filePath = f"{os.getcwd()}/static/data/photos/"
+lowResPath = f"{os.getcwd()}/static/data/photos/LR/"
+highResPath = f"{os.getcwd()}/static/data/photos/HR/"
 
 print("\n\n")
 
@@ -39,6 +39,15 @@ thread.start()
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/manual/photo')
+def take_photo():
+    try:
+        camera_controls.take_photo()
+    except Exception as e:
+        logger.error(e)
+        return(jsonify(status=500, data=str(e)))
+    return(jsonify(status=200, data=None))
 
 @app.route('/display_image/<image_folder>/<image>')
 def display_image(image_folder, image):
