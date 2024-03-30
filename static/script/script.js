@@ -1,6 +1,5 @@
 function loadable(){
     data()
-    getStatus()
 }
 
 function getStatus(){
@@ -66,7 +65,7 @@ function start(){
               }, 1000); 
         }
     })
-    getStatus()
+    // getStatus()
 }
 
 function end(){
@@ -102,7 +101,7 @@ function end(){
               }, 1000); 
         }
     })
-    getStatus()
+    // getStatus()
 }
 
 function resetEnd(){
