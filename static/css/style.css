@@ -20,16 +20,17 @@ body {
     width: 60%;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+    gap: 25px;
 }
-
 .buttons button {
     transition: 0.2s;
     font-size: xx-large;
-    margin-left: 5%;
-    width: 42%;
-    padding: 3%;
-    border: 0px;
-    border-radius: 20px;
+    flex: auto;
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    text-align: center;
 }
 .buttonOff {
     transition: 0.2s;

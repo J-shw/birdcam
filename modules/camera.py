@@ -1,5 +1,5 @@
 from modules.sysLogger import logger
-from picamera2 import Picamera2
+from picamera2 import Picamera2, Preview
 from libcamera import controls
 from PIL import Image
 import time, datetime, os
@@ -7,28 +7,27 @@ import time, datetime, os
 last_trigger = None
 
 class camera_data:
-    filePath = "/home/bird/static/data/photos/" # Make sure there is a HR and LR folder to save High res and Low res photos
+    filePath = f"{os.getcwd()}/static/data/photos/" # Make sure there is a HR and LR folder to save High res and Low res photos
 
-def creat_cam():
-    try:
-        picam2 = Picamera2()
-        camera_config = picam2.create_still_configuration(main={"size": (4608, 2592)})
-        picam2.configure(camera_config)
-        picam2.set_controls({"AfMode": controls.AfModeEnum.Continuous})
-        #picam2.set_controls({
-        #   "AfMode": controls.AfModeEnum.Continuous,
-        #   "ExposureTime": "auto"
-        #})
+try:
+    camera = Picamera2()
+    camera_config = camera.create_still_configuration(main={"size": (4608, 2592), "format": "BGR888"})
+    camera.configure(camera_config)
+    camera.set_controls({"AfMode": controls.AfModeEnum.Continuous})
+    camera.start_preview(Preview.DRM)
+    #camera.set_controls({
+    #   "AfMode": controls.AfModeEnum.Continuous,
+    #   "ExposureTime": "auto"
+    #})
+    logger.info('Camera created')
+except Exception as e:
+    logger.critical(f'Failed to create camera: {e}')
+    camera = None
 
-        return picam2
-    except Exception as e:
-        logger.critical(e)
-        return None
-    finally:
-        logger.info('Camera created')
-
-def take_photo(camera):
+def take_photo():
     global last_trigger
+    global camera
+    if camera == None: return
 
     logger.info('Taking photo')
 
@@ -37,7 +36,7 @@ def take_photo(camera):
     formatted_date = current_time.strftime("%Y-%m-%d")
     formatted_time = current_time.strftime("%H:%M:%S")
 
-    try: 
+    try:
         hr_filepath = str(camera_data.filePath)+"HR/" + str(formatted_date)
         lr_filepath= str(camera_data.filePath)+"LR/" + str(formatted_date)
         os.makedirs(hr_filepath, exist_ok=True)
@@ -58,5 +57,6 @@ def take_photo(camera):
         highres_image = Image.open(hr_file)
         lowres_image = highres_image.resize((640, 480))
         lowres_image.save(lr_file)
-    except Exception as e: 
+    except Exception as e:
         logger.error(f"Failed to resize photo: {e}")
+    logger.info('Photo taken!')
