@@ -24,6 +24,7 @@ function takePhoto(){
                 resetBtn(btn, 'Take photo')
               }, 1000); 
         }else{
+            loadImages();
             btn.classList.add("buttonComplete");
             btn.innerHTML = "Complete";
             setTimeout(() => {
@@ -166,6 +167,7 @@ function display_images(folders) {
 
     for (index in folders){
         const parentDiv = document.getElementById("viewer")
+        parentDiv.innerHTML = '';
         var div = document.createElement("div");
         var para = document.createElement("p");
 
@@ -243,3 +245,5 @@ function data(){
     })
 
 }
+
+setTimeout(() => {loadImages()}, 2000);
