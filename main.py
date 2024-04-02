@@ -2,8 +2,7 @@
 import modules.startup
 import modules.camera as camera_controls
 from modules.sysLogger import logger
-from flask import Flask, render_template, jsonify
-from flask_caching import Cache
+from flask import Flask, render_template, jsonify, send_from_directory
 from waitress import serve
 import time, os, threading, motion, psutil
 
@@ -19,7 +18,6 @@ pip install Flask-Caching
 
 #Initialize the Flask app
 app = Flask(__name__)
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 filePath = f"{os.getcwd()}/static/data/photos/"
 lowResPath = f"{os.getcwd()}/static/data/photos/LR/"
@@ -143,6 +141,19 @@ def deleteImage(image_folder, image):
         logger.error(e)
         return  jsonify(data=str(e), status=500)
     return jsonify(data=None, status=200)
+
+@app.route('/download/image/<image_folder>/<image>', methods=['GET'])
+def downloadImage(image_folder, image):
+
+    image_path = os.path.join(highResPath, image_folder, image)
+
+    # Check if the file exists
+    if os.path.isfile(image_path):
+        # Serve the file for download
+        return send_from_directory(directory=os.path.join(highResPath, image_folder), filename=image, as_attachment=True)
+    else:
+        # If the file does not exist, return a 404 error
+        return "File not found", 404
 
 
 if __name__ == "__main__":

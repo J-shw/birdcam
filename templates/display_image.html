@@ -8,20 +8,16 @@
 
 <body>
     <div class="top">
-        <a href="/">
-            <img class="back" src="/static/data/icons/back.png">
-        </a>
-        <p><b>{{ image_name }}</b></p>
-        <a href="{{ url_for('static', filename=image_path) }}" download="{{ image_name }}">
-            <img class="download" src="/static/data/icons/download.png">
-        </a>
-        <a onclick="deleteImage('{{ image_loc }}')">
-            <img class="delete" src="/static/data/icons/bin.png">
-        </a>
+        <img onclick="goHome()" class="back" src="/static/data/icons/arrow-left-solid.svg">
+        <p style="flex: 5;"><b>{{ image_name }}</b></p> 
+        <div style="flex: 1;" class="buttons">
+            <img class="download" src="/static/data/icons/download-solid.svg" onclick="downloadImage('{{ image_path }}', ' {{ image_name }}')">
+            <img class="delete" src="/static/data/icons/trash-solid.svg" onclick="deleteImage('{{ image_loc }}')">
+        </div>
     </div>
 
     <div class="image-body">
-        <img class="main-img" src="{{ url_for('static', filename=image_path) }}" alt="Image">
+        <img class="main-img" src= "{{ url_for('static', filename=image_path) }}" alt="Image">  <!-- "../photos/DSC_9006.jpg" -->
     </div>
 </body>
 </html>
