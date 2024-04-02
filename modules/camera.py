@@ -24,7 +24,7 @@ except Exception as e:
     logger.critical(f'Failed to create camera: {e}')
     camera = None
 
-def take_photo():
+def take_photo(channel='manual'):
     global last_trigger
     global camera
     if camera == None: return
