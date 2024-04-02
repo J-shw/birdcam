@@ -227,13 +227,11 @@ function data(){
             console.log("Get status error - " + data.data + " | " + data.status);
         }else{
             // deviceData = [cpuTemp,cpuFreq,totalDisk,usedDisk]
-            // lastPhoto = [date,time]
-
             let lastPhoto = data.data[0];
             let deviceData = data.data[1];
 
             if (lastPhoto != null){
-                latestPhoto.innerHTML = "Recent - " + lastPhoto[0] + " | " + lastPhoto[1];
+                latestPhoto.innerHTML = "Recent - " + lastPhoto;
             } else {
                 latestPhoto.innerHTML = "None" 
             }
@@ -245,6 +243,3 @@ function data(){
     })
 
 }
-
-setTimeout(() => {loadImages()}, 2000);
-setInterval(loadable, 1000);
