@@ -24,6 +24,7 @@ function takePhoto(){
                 resetBtn(btn, 'Take photo')
               }, 1000); 
         }else{
+            loadImages();
             btn.classList.add("buttonComplete");
             btn.innerHTML = "Complete";
             setTimeout(() => {
@@ -166,6 +167,7 @@ function display_images(folders) {
 
     for (index in folders){
         const parentDiv = document.getElementById("viewer")
+        parentDiv.innerHTML = '';
         var div = document.createElement("div");
         var para = document.createElement("p");
 
@@ -227,13 +229,11 @@ function data(){
             console.log("Get status error - " + data.data + " | " + data.status);
         }else{
             // deviceData = [cpuTemp,cpuFreq,totalDisk,usedDisk]
-            // lastPhoto = [date,time]
-
             let lastPhoto = data.data[0];
             let deviceData = data.data[1];
 
             if (lastPhoto != null){
-                latestPhoto.innerHTML = "Recent - " + lastPhoto[0] + " | " + lastPhoto[1];
+                latestPhoto.innerHTML = "Recent - " + lastPhoto;
             } else {
                 latestPhoto.innerHTML = "None" 
             }
@@ -247,4 +247,3 @@ function data(){
 }
 
 setTimeout(() => {loadImages()}, 2000);
-setInterval(loadable, 1000);
