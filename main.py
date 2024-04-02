@@ -144,14 +144,13 @@ def deleteImage(image_folder, image):
 
 @app.route('/download/image/<image_folder>/<image>', methods=['GET'])
 def downloadImage(image_folder, image):
-   # Assuming the images are stored in a folder named "data/photos"
-    # Construct the path to the image file
+
     image_path = os.path.join(highResPath, image_folder, image)
 
     # Check if the file exists
     if os.path.isfile(image_path):
         # Serve the file for download
-        return send_from_directory(directory=os.path.join('data', 'photos', image_folder), filename=image, as_attachment=True)
+        return send_from_directory(directory=os.path.join(highResPath, image_folder), filename=image, as_attachment=True)
     else:
         # If the file does not exist, return a 404 error
         return "File not found", 404
