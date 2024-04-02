@@ -11,7 +11,7 @@
         <img onclick="goHome()" class="back" src="/static/data/icons/arrow-left-solid.svg">
         <p style="flex: 5;"><b>{{ image_name }}</b></p> 
         <div style="flex: 1;" class="buttons">
-            <img class="download" src="/static/data/icons/download-solid.svg" onclick="downloadImage('{{ image_loc }}')">
+            <img class="download" src="/static/data/icons/download-solid.svg" onclick="downloadImage('{{ image_path }}', ' {{ image_name }}')">
             <img class="delete" src="/static/data/icons/trash-solid.svg" onclick="deleteImage('{{ image_loc }}')">
         </div>
     </div>
