@@ -13,7 +13,6 @@ pip install picamera2
 pip install Pillow
 pip install waitress
 pip install psutil
-pip install Flask-Caching
 """
 
 #Initialize the Flask app
