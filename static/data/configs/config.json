@@ -1,0 +1,7 @@
+{
+    "alerts": true,
+    "webhook":{
+        "server": "http(s)://ServerURL",
+        "eventKey": "Put_Key_Here"
+    }
+}
