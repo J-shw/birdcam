@@ -1,7 +1,0 @@
-{
-    "alerts": true,
-    "webhook":{
-        "server": "http(s)://ServerURL",
-        "photoTake-key": "Put_Key_Here"
-    }
-}
