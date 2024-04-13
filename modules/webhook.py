@@ -1,7 +1,7 @@
 import requests, time
 from modules.sysLogger import logger
 
-def send(server,event_key):
+def send(server : str,event_key : str):
     rCode = -1
     start = time.time()
     try:
