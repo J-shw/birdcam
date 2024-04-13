@@ -1,4 +1,5 @@
 from modules.sysLogger import logger
+import modules.webhook as webhook
 from picamera2 import Picamera2, Preview
 from libcamera import controls
 from PIL import Image
@@ -8,7 +9,13 @@ last_trigger = None
 
 class camera_data:
     filePath = f"{os.getcwd()}/static/data/photos/" # Make sure there is a HR and LR folder to save High res and Low res photos
-
+    config = {
+        "alerts": True,
+        "webhook":{
+            "server": "http(s)://ServerURL",
+            "eventKey": "Put_Key_Here"
+        }
+    }
 try:
     camera = Picamera2()
     camera_config = camera.create_still_configuration(main={"size": (4608, 2592), "format": "BGR888"})
@@ -27,7 +34,9 @@ except Exception as e:
 def take_photo():
     global last_trigger
     global camera
-    if camera == None: return
+    if camera == None: 
+        logger.warning('No camera set')
+        return
 
     logger.info('Taking photo')
 
@@ -60,3 +69,6 @@ def take_photo():
     except Exception as e:
         logger.error(f"Failed to resize photo: {e}")
     logger.info('Photo taken!')
+
+    if camera_data.config['alerts']:
+        webhook.send(camera_data.config['webhook']['server'], camera_data.config['webhook']['eventKey'])
