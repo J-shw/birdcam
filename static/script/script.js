@@ -34,35 +34,6 @@ function takePhoto(){
     });
 }
 
-function getStatus(){
-    let statusText = document.getElementById("currentStatus");
-    fetch('/status')
-
-    .then(response => response.json())
-    .then(data=>{
-    
-        if(data.status != 200){
-            statusText.style.color = "#FF0044";
-            statusText.innerHTML = "Crashed";
-            console.log("Get status error - " + data.error + " | " + data.status);
-        }else{
-            if (data.error == false){
-                if (data.data == true) {
-                    statusText.innerHTML = "Running";
-                    statusText.style.color = "#06a85c";
-                } else {
-                    statusText.innerHTML = "Stopped";
-                    statusText.style.color = "black";
-                }
-            }else{
-                statusText.innerHTML = "Crashed";
-                statusText.style.color = "#FF0044";
-                console.log("Camera error - " + data.error + " | " + data.status)
-            }
-        }
-    })
-}
-
 function start(){
     let startBtn = document.getElementById("startBtn");
     startBtn.classList.remove("buttonComplete");
@@ -97,7 +68,6 @@ function start(){
               }, 1000); 
         }
     })
-    // getStatus()
 }
 
 function end(){
@@ -133,7 +103,6 @@ function end(){
               }, 1000); 
         }
     })
-    // getStatus()
 }
 
 function resetBtn(btn, text){
