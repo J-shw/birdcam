@@ -106,7 +106,6 @@ function end(){
 }
 
 function resetBtn(btn, text){
-    let startBtn = document.getElementById("startBtn");
     btn.innerHTML = text;
     btn.classList.remove("buttonFail");
     btn.classList.remove("buttonComplete");
@@ -214,5 +213,3 @@ function data(){
     })
 
 }
-
-setTimeout(() => {loadImages()}, 2000);
