@@ -8,7 +8,8 @@ running = False
 def last():
     return camera_commands.last_trigger
 
-def motion_detected():
+def motion_detected(channel):
+    logger.debug(channel)
     logger.info('Motion detected')
     camera_commands.take_photo()
 
