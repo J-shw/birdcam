@@ -22,7 +22,7 @@ handler.setFormatter(formatter)
 # Create a logger and add the handler
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 
 # Logger level options:
 # DEBUG
