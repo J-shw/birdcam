@@ -15,7 +15,7 @@ try:
     camera_config = camera.create_still_configuration(main={"size": (4608, 2592), "format": "BGR888"})
     camera.configure(camera_config)
     camera.set_controls({"AfMode": controls.AfModeEnum.Continuous})
-    camera.start_preview(Preview.DRM)
+    #camera.start_preview(Preview.DRM)
     #camera.set_controls({
     #   "AfMode": controls.AfModeEnum.Continuous,
     #   "ExposureTime": "auto"
