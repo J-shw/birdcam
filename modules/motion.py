@@ -8,6 +8,10 @@ running = False
 def last():
     return camera_commands.last_trigger
 
+def motion_detected():
+    logger.info('Motion detected')
+    camera_commands.take_photo()
+
 def start():
     global running
 
@@ -21,7 +25,7 @@ def start():
     io.setup(channel, io.IN, io.PUD_DOWN)
 
     # Assign the partial function to the rising edge event
-    io.add_event_detect(channel, io.RISING, callback=camera_commands.take_photo, bouncetime=5000)
+    io.add_event_detect(channel, io.RISING, callback=motion_detected, bouncetime=5000)
 
     try:
         logger.info("Waiting for motion")
