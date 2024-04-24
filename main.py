@@ -88,29 +88,25 @@ def lowResImg_loc():
         files_and_directories = os.listdir(lowResPath)
         directories = [d for d in files_and_directories if os.path.isdir(os.path.join(lowResPath, d))]
         for d in directories:
-            current.append(d)
             newFilePath = str(lowResPath) + str(d)
             files_and_directories = os.listdir(newFilePath)
             files = [f for f in files_and_directories if os.path.isfile(os.path.join(newFilePath, f))]
             
-            if len(files) != 0: 
-                files_list = []
-                for f in files:
-                    files_list.append(f)
-                
-                current = {
-                    "folder": d,
-                    "files": files_list
-                }
+            files_list = []
+            for f in files:
+                files_list.append(f)
+            
+            current = {
+                "folder": d,
+                "files": sorted(files_list[1:], key=lambda x: x.split('.')[0], reverse=True)
+            }
 
-                storage.append(current)
+            storage.append(current)
     except Exception as e:
         logger.error(e)
         return(jsonify(status=500, data=str(e)))
-    
-    sorted_storage = sorted(storage, key=lambda x: x[0], reverse=True)
 
-    return jsonify(status=200, data=sorted_storage)
+    return jsonify(status=200, data=storage)
 
 @app.route('/data', methods=['GET'])
 def data():
