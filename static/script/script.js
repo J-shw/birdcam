@@ -130,40 +130,38 @@ function showHiResImage(file){
     document.body.appendChild(hiresDiv);
 }
 
-function display_images(folders) {
+function display_images(folders_dict) {
+    console.log(folders_dict)
     const filePath = "../static/data/photos/LR/";
-
-    for (index in folders){
-        const parentDiv = document.getElementById("viewer")
-        parentDiv.innerHTML = '';
+    const parentDiv = document.getElementById("viewer")
+    parentDiv.innerHTML = '';
+    
+    folders_dict.forEach(fileData => {
         var div = document.createElement("div");
         var para = document.createElement("p");
 
-        fileData = folders[index];
-        let newFilePath = filePath + fileData[0] + "/";
+        let folder = fileData['folder']
+        let newFilePath = filePath + folder + "/";
+
         para.classList.add("header");
-        para.innerText = fileData[0];
+        para.innerText = folder;
         div.appendChild(para);
 
-        for ( i in fileData){
-            if (i!=0){
-                imgSource = newFilePath + fileData[i];
-                imagePath =   fileData[0] + "/" +fileData[i];
-                var linkElement = document.createElement('a');
-                var imgTag = document.createElement("img");
+        fileData['files'].forEach(file => {
+            imgSource = newFilePath + file;
+            imagePath =   folder + "/" + file;
+            var linkElement = document.createElement('a');
+            var imgTag = document.createElement("img");
 
-                linkElement.href = "/display_image/"+imagePath;
-                imgTag.src = imgSource;
-                imgTag.loading = 'lazy';
+            linkElement.href = "/display_image/"+imagePath;
+            imgTag.src = imgSource;
+            imgTag.loading = 'lazy';
 
-                linkElement.appendChild(imgTag);
-                div.appendChild(linkElement);
-            }
-        }
+            linkElement.appendChild(imgTag);
+            div.appendChild(linkElement);
+        });
         parentDiv.appendChild(div);
-        
-    }
-
+    });
 }
 
 function loadImages(){
@@ -175,8 +173,8 @@ function loadImages(){
         if(data.status != 200){
             console.log("Get status error - " + data.data + " | " + data.status);
         }else{
-            folders = data.data
-            display_images(folders)
+            folders_dict = data.data
+            display_images(folders_dict)
         }
     })
 };
