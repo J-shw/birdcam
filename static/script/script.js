@@ -90,7 +90,7 @@ function end(){
             endBtn.innerHTML = "Failed";
             console.log("End error - " + data.data + " | " + data.status);
             setTimeout(() => {
-                resetBtn(startBtn, 'Stop')
+                resetBtn(endBtn, 'Stop')
               }, 1000);              
         }else{
             endBtn.classList.remove("buttonFail");
@@ -99,7 +99,7 @@ function end(){
             endBtn.classList.add("buttonComplete");
             endBtn.innerHTML = "Stopped";
             setTimeout(() => {
-                resetBtn(startBtn, 'Stop')
+                resetBtn(endBtn, 'Stop')
               }, 1000); 
         }
     })
