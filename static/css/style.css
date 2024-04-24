@@ -92,8 +92,15 @@ body {
     font-size: large;
     text-align: left;
 }
+
+.selected {
+    border: rgb(19, 42, 255) 3px solid !important;
+    border-radius: 5px;
+}
+
 .viewer div img {
     max-width: 180px;
+    border: rgba(0, 0, 0, 0) 3px solid;
 }
 .viewer div img:hover {
     transition: 0.2s;
