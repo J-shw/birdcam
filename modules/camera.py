@@ -26,12 +26,6 @@ except Exception as e:
     camera = None
 
 def take_photo(channel='manual'):
-    try:
-        with open('static/data/configs/config.json') as config_file:
-            configData = json.load(config_file)
-    except Exception as e:
-        logger.critical(e)
-
     global last_trigger
     global camera
     global configData
