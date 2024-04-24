@@ -1,3 +1,7 @@
+class dataClass {
+    static selected = [];
+}
+
 function loadable(){
     data()
 }
@@ -152,7 +156,22 @@ function display_images(folders_dict) {
             var linkElement = document.createElement('a');
             var imgTag = document.createElement("img");
 
-            linkElement.href = "/display_image/"+imagePath;
+            linkElement.addEventListener('click', function(event) {
+                if (event.ctrlKey) {
+                    if(!imgTag.classList.contains('selected')){
+                        dataClass.selected.push(imagePath);
+                        imgTag.classList.add('selected');
+                    }else{
+                        let index = dataClass.selected.indexOf(imagePath);
+                        if (index !== -1) {
+                            dataClass.selected.splice(index, 1);
+                        }
+                        imgTag.classList.remove('selected');
+                    }
+                } else {
+                    window.location.href = "/display_image/"+imagePath;
+                }
+            });
             imgTag.src = imgSource;
             imgTag.loading = 'lazy';
 
