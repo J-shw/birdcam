@@ -1,10 +1,11 @@
 #Import necessary libraries
 import modules.startup
 import modules.camera as camera_controls
+import modules.motion as motion
 from modules.sysLogger import logger
 from flask import Flask, render_template, jsonify, send_from_directory
 from waitress import serve
-import time, os, threading, motion, psutil
+import time, os, threading, psutil
 
 """
 Librarys to install:
@@ -13,6 +14,7 @@ pip install picamera2
 pip install Pillow
 pip install waitress
 pip install psutil
+pip install requests
 """
 
 #Initialize the Flask app
@@ -22,11 +24,7 @@ filePath = f"{os.getcwd()}/static/data/photos/"
 lowResPath = f"{os.getcwd()}/static/data/photos/LR/"
 highResPath = f"{os.getcwd()}/static/data/photos/HR/"
 
-print("\n\n")
-
-time.sleep(0.2)
-
-print("\n\n- - -Server started - - -\n")
+logger.info('Starting server')
 
 thread = threading.Thread(target=motion.start)
 
@@ -156,4 +154,7 @@ def downloadImage(image_folder, image):
 
 
 if __name__ == "__main__":
-    serve(app, host="0.0.0.0", port=8080)
+    try:
+        serve(app, host="0.0.0.0", port=8080)
+    except Exception as e:
+        logger.critical(f"failed to start sever: {e}")

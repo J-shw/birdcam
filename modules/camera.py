@@ -1,8 +1,9 @@
 from modules.sysLogger import logger
+import modules.webhook as webhook
 from picamera2 import Picamera2, Preview
 from libcamera import controls
 from PIL import Image
-import time, datetime, os
+import time, datetime, os, json
 
 last_trigger = None
 
@@ -14,7 +15,7 @@ try:
     camera_config = camera.create_still_configuration(main={"size": (4608, 2592), "format": "BGR888"})
     camera.configure(camera_config)
     camera.set_controls({"AfMode": controls.AfModeEnum.Continuous})
-    camera.start_preview(Preview.DRM)
+    #camera.start_preview(Preview.DRM)
     #camera.set_controls({
     #   "AfMode": controls.AfModeEnum.Continuous,
     #   "ExposureTime": "auto"
@@ -25,9 +26,18 @@ except Exception as e:
     camera = None
 
 def take_photo(channel='manual'):
+    try:
+        with open('static/data/configs/config.json') as config_file:
+            configData = json.load(config_file)
+    except Exception as e:
+        logger.critical(e)
+
     global last_trigger
     global camera
-    if camera == None: return
+    global configData
+    if camera == None: 
+        logger.warning('No camera set')
+        return
 
     logger.info('Taking photo')
 
@@ -60,3 +70,6 @@ def take_photo(channel='manual'):
     except Exception as e:
         logger.error(f"Failed to resize photo: {e}")
     logger.info('Photo taken!')
+
+    if configData['alerts']:
+        webhook.send(configData['webhook']['server'], configData['webhook']['eventKey'])
