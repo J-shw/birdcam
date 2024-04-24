@@ -131,7 +131,6 @@ function showHiResImage(file){
 }
 
 function display_images(folders_dict) {
-    console.log(folders_dict)
     const filePath = "../static/data/photos/LR/";
     const parentDiv = document.getElementById("viewer")
     parentDiv.innerHTML = '';
