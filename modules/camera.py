@@ -25,13 +25,13 @@ except Exception as e:
     logger.critical(f'Failed to create camera: {e}')
     camera = None
 
-try:
-    with open('static/data/configs/config.json') as config_file:
-        configData = json.load(config_file)
-except Exception as e:
-    logger.critical(e)
+def take_photo(channel='manual'):
+    try:
+        with open('static/data/configs/config.json') as config_file:
+            configData = json.load(config_file)
+    except Exception as e:
+        logger.critical(e)
 
-def take_photo():
     global last_trigger
     global camera
     global configData
